@@ -1,0 +1,60 @@
+[project]
+name = "minperiod"
+version = "0.1.0"
+description = "Download the historical prices and check the hours they're usuall reach the minimum value."
+readme = "README.org"
+requires-python = ">=3.13"
+dependencies = ["yfinance>=1.7.0"]
+
+[dependency-groups]
+dev = ["ipython>=9.17.1", "pytest>=9.1.1"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["migrations"]
+
+select = [
+  "E",
+  "W",   # pycodestyle (replaces Flake8's style checks)
+  "F",   # pyflakes (replaces Flake8's error checks)
+  "I",   # isort (replaces isort for import sorting)
+  "C",   # flake8-comprehensions
+  "B",   # flake8-bugbear (common Flake8 plugin for bug detection)
+  "Q",   # flake8-quotes (enforce double quotes, matching Black)
+  "ANN", # flake8-annotations (type annotation checks, useful for Pydantic)
+  "D",   # pydocstyle (docstring checks)
+  "UP",  # pyupgrade (modern Python syntax, e.g., f-strings)
+  "PT",  # flake8-pytest-style (if you use pytest)
+  "RUF", # Ruff-specific rules (recommended for additional checks)
+]
+ignore = [
+  "D203", # Conflicts with D211 (no blank line before class docstring)
+  "D213", # Conflicts with D212 (multi-line docstring summary position)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.isort]
+known-first-party = ["your_project"]
+section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+combine-as-imports = true
+lines-after-imports = 2
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["ANN"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
