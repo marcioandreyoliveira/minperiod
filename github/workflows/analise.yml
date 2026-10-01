@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 env:
-  TICKERS: "CMIG4 TAEE3 PETR4 VALE3 ITUB4 BBDC4 ABEV3 WEGE3 B3SA3 SUZB3"
+  TICKERS: "BRSR6 BBAS3 ITUB4 ITSA4 CMIG4 TAEE3 CPFE3 ISAE4 CXSE3 BBSE3 TIMS3 VIVT3 BRAP3"
   INTERVALO: "5"      # minutos
   PERIODO: "60"       # dias
   FAIXA: "60"         # minutos (faixa de análise)
