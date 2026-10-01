@@ -1,0 +1,46 @@
+#+title README
+
+* Installation
+#+begin_src bash
+  uv init --no-pin-python "minperiod"
+  cd "$my_project" || return 1
+  uv venv
+  source .venv/bin/activate 2>/dev/null || . .venv/bin/activate
+  uv add --dev ipython pytest
+  uv sync
+  uv add yfinance
+#+end_src
+
+* Activate the environment
+#+begin_src bash
+  # inside the project folder, run
+  source ./.venv/bin/activate
+#+end_src
+
+* How to execute the program
+** Retrieve the historical prices
+#+begin_src bash
+  python ./getprices <ticker> <period> <days>
+#+end_src
+
+Valid arguments
+<ticker>: A valid ticker on B3 (example: TAEE3)
+<period>: 1, 5 or 10 (value in minuters)
+<days>: 1 to 60.
+*NOTE*: If <period> = 1, then maximum returned days = 7.
+
+Example:
+#+begin_src bash
+  python ./getprices TAEE3 5 60
+#+end_src
+
+** Analize
+#+begin_src bash
+python analise_minimas.py <path to CSV files> <days>
+#+end_src
+
+Exemple
+#+begin_src bash
+  # assuming that CSV files are at the same directory level than analise_minimas.py
+  python analise_minimas.py <path to CSV . 60
+#+end_src
