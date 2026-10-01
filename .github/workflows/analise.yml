@@ -12,8 +12,8 @@ permissions:
 
 env:
   TICKERS: "BRSR6 BBAS3 ITUB4 ITSA4 CMIG4 TAEE3 CPFE3 ISAE4 CXSE3 BBSE3 TIMS3 VIVT3 BRAP3"
-  INTERVALO: "5"      # minutos
-  PERIODO: "60"       # dias
+  INTERVALO: "1"      # minutos
+  PERIODO: "7"       # dias
   FAIXA: "60"         # minutos (faixa de análise)
 
 jobs:
@@ -34,24 +34,28 @@ jobs:
       - name: Instalar dependências
         run: pip install yfinance pandas
 
-      - name: Baixar dados de todos os tickers
+      - name: Baixar dados para data/
         run: |
+          mkdir -p data
+          cd data
           for ticker in $TICKERS; do
             echo "=== Baixando $ticker ==="
-            python getprices.py $ticker $INTERVALO $PERIODO || echo "Falha ao baixar $ticker"
+            python ../getprices.py $ticker $INTERVALO $PERIODO || echo "Falha ao baixar $ticker"
           done
 
-      - name: Analisar cada ticker
+      - name: Analisar dados em results/
         run: |
+          mkdir -p results
+          cd results
           for ticker in $TICKERS; do
             echo "=== Analisando $ticker ==="
-            python analise_minimas.py $ticker . $FAIXA || echo "Falha ao analisar $ticker"
+            python ../analise_minimas.py $ticker ../data $FAIXA || echo "Falha ao analisar $ticker"
           done
 
       - name: Commit dos CSVs e JSONs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add *.csv resultado_analise_*.json
+          git add data/ results/
           git diff --staged --quiet || git commit -m "Atualização $(date -u +%Y-%m-%d_%H%M)"
           git push
