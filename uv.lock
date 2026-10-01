@@ -452,6 +452,7 @@ name = "minperiod"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "pandas" },
     { name = "yfinance" },
 ]
 
@@ -462,7 +463,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "yfinance", specifier = ">=1.7.0" }]
+requires-dist = [
+    { name = "pandas", specifier = ">=3.0.6" },
+    { name = "yfinance", specifier = ">=1.7.0" },
+]
 
 [package.metadata.requires-dev]
 dev = [
