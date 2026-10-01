@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "Download the historical prices and check the hours they're usuall reach the minimum value."
 readme = "README.org"
 requires-python = ">=3.13"
-dependencies = ["yfinance>=1.7.0"]
+dependencies = [
+    "pandas>=3.0.6",
+    "yfinance>=1.7.0",
+]
 
 [dependency-groups]
 dev = ["ipython>=9.17.1", "pytest>=9.1.1"]
