@@ -8,7 +8,7 @@
   source .venv/bin/activate 2>/dev/null || . .venv/bin/activate
   uv add --dev ipython pytest
   uv sync
-  uv add yfinance
+  uv add yfinance pandas
 #+end_src
 
 * Activate the environment
