@@ -1,4 +1,4 @@
-#+title README
+#+title: README
 
 * Installation
 #+begin_src bash
