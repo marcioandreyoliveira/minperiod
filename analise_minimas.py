@@ -2,7 +2,13 @@
 """
 Analisa os CSVs gerados por pricepermin.py e calcula em quais
 faixas de horário a mínima do dia ocorreu com mais frequência.
-Salva o resultado em resultado_analise.json para consumo externo.
+
+Uso:
+    python analise_minimas.py <TICKER> [pasta] [faixa_min]
+
+Exemplo:
+    python analise_minimas.py CMIG4 . 60
+    python analise_minimas.py TAEE3 ./dados 30
 """
 
 import glob
@@ -14,13 +20,24 @@ import pandas as pd
 
 
 COLUNAS_ESPERADAS = {"Data", "Hora", "Low"}
-ARQUIVO_SAIDA = "resultado_analise.json"
 
 
-def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
-    arquivos = sorted(glob.glob(f"{pasta}/*.csv"))
+def analisar_minimas(ticker, pasta=".", faixa_min=30, verbose=True):
+    ticker = ticker.upper()
+
+    # Filtra apenas CSVs que começam com <TICKER>_
+    padrao = f"{pasta}/{ticker}_*.csv"
+    arquivos = sorted(glob.glob(padrao))
+
     if not arquivos:
-        raise FileNotFoundError(f"Nenhum CSV encontrado em {pasta}")
+        raise FileNotFoundError(
+            f"Nenhum CSV encontrado com o padrão '{padrao}'. "
+            f"Verifique o ticker e a pasta."
+        )
+
+    if verbose:
+        print(f"Ticker: {ticker}")
+        print(f"Arquivos encontrados: {len(arquivos)}")
 
     frames = []
     usados = 0
@@ -38,14 +55,15 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
         faltando = COLUNAS_ESPERADAS - set(df.columns)
         if faltando:
             if verbose:
-                print(f"Pulando {Path(arq).name}: "
-                      f"colunas faltando {sorted(faltando)}")
+                print(
+                    f"Pulando {Path(arq).name}: " f"colunas faltando {sorted(faltando)}"
+                )
             pulados += 1
             continue
 
         df["Data"] = df["Data"].astype(str)
         df["Hora"] = df["Hora"].astype(str)
-        df["Low"]  = pd.to_numeric(df["Low"], errors="coerce")
+        df["Low"] = pd.to_numeric(df["Low"], errors="coerce")
         df["Hora_td"] = pd.to_timedelta(df["Hora"], errors="coerce")
         df = df.dropna(subset=["Low", "Hora_td"])
 
@@ -62,8 +80,8 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
 
     if not frames:
         raise RuntimeError(
-            "Nenhum arquivo válido encontrado. "
-            "Confira se os CSVs têm as colunas Data;Hora;...;Low;..."
+            f"Nenhum arquivo válido para {ticker}. "
+            f"Confira se os CSVs têm as colunas Data;Hora;...;Low;..."
         )
 
     tudo = pd.concat(frames, ignore_index=True)
@@ -71,8 +89,8 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
     antes = len(tudo)
     tudo = (
         tudo.sort_values("Low")
-            .drop_duplicates(subset=["Data", "Hora"], keep="first")
-            .reset_index(drop=True)
+        .drop_duplicates(subset=["Data", "Hora"], keep="first")
+        .reset_index(drop=True)
     )
     removidas = antes - len(tudo)
 
@@ -83,11 +101,13 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
     for dia, grupo in tudo.groupby("Data"):
         idx = grupo["Low"].idxmin()
         linha = grupo.loc[idx]
-        registros.append({
-            "Data":     dia,
-            "Hora_min": linha["Hora_td"],
-            "Low_min":  linha["Low"],
-        })
+        registros.append(
+            {
+                "Data": dia,
+                "Hora_min": linha["Hora_td"],
+                "Low_min": linha["Low"],
+            }
+        )
 
     res = pd.DataFrame(registros).sort_values("Data").reset_index(drop=True)
 
@@ -102,8 +122,10 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
 
     if verbose:
         total = len(res)
-        print(f"\nAnálise de {total} dias "
-              f"({usados} arquivos usados, {pulados} pulados)\n")
+        print(
+            f"\nAnálise de {total} dias "
+            f"({usados} arquivos usados, {pulados} pulados)\n"
+        )
         print(f"{'Faixa':<15} {'Dias':>5} {'%':>7}")
         print("-" * 55)
         for f, c in contagem.items():
@@ -111,12 +133,16 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
             barra = "█" * int(pct / 2)
             print(f"{f:<15} {c:>5} {pct:>6.1f}%   {barra}")
 
-        print(f"\nFaixa mais provável: {contagem.idxmax()} "
-              f"({contagem.max()} dias, "
-              f"{contagem.max()/total*100:.1f}%)")
+        print(
+            f"\nFaixa mais provável: {contagem.idxmax()} "
+            f"({contagem.max()} dias, "
+            f"{contagem.max()/total*100:.1f}%)"
+        )
 
-    # --- Salva o resultado em JSON ---
+    # --- Salva o resultado em JSON (um por ticker) ---
+    arquivo_saida = f"resultado_analise_{ticker}.json"
     resultado = {
+        "ticker": ticker,
         "faixa_mais_provavel": str(contagem.idxmax()),
         "dias_na_faixa": int(contagem.max()),
         "total_dias": int(len(res)),
@@ -125,16 +151,23 @@ def analisar_minimas(pasta=".", faixa_min=30, verbose=True):
         "faixas": {str(k): int(v) for k, v in contagem.items()},
     }
 
-    with open(ARQUIVO_SAIDA, "w", encoding="utf-8") as f:
+    with open(arquivo_saida, "w", encoding="utf-8") as f:
         json.dump(resultado, f, ensure_ascii=False, indent=2)
 
     if verbose:
-        print(f"\nResultado salvo em {ARQUIVO_SAIDA}")
+        print(f"\nResultado salvo em {arquivo_saida}")
 
     return res, contagem
 
 
 if __name__ == "__main__":
-    pasta = sys.argv[1] if len(sys.argv) > 1 else "."
-    faixa = int(sys.argv[2]) if len(sys.argv) > 2 else 30
-    analisar_minimas(pasta, faixa)
+    if len(sys.argv) < 2:
+        print("Uso: python analise_minimas.py <TICKER> [pasta] [faixa_min]")
+        print("Exemplo: python analise_minimas.py CMIG4 . 60")
+        sys.exit(1)
+
+    ticker = sys.argv[1]
+    pasta = sys.argv[2] if len(sys.argv) > 2 else "."
+    faixa = int(sys.argv[3]) if len(sys.argv) > 3 else 30
+
+    analisar_minimas(ticker, pasta, faixa)
