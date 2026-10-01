@@ -36,11 +36,13 @@ Example:
 
 ** Analize
 #+begin_src bash
-python analise_minimas.py <path to CSV files> <days>
+python analise_minimas.py <ticker> <path to CSV files> <days>
 #+end_src
 
 Exemple
 #+begin_src bash
   # assuming that CSV files are at the same directory level than analise_minimas.py
-  python analise_minimas.py <path to CSV . 60
+  python analise_minimas.py TAEE3 . 60
 #+end_src
+
+*NOTES*: Only files whose filename start with the ticker will be used in the analysis.
