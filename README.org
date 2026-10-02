@@ -1,4 +1,5 @@
 #+title: README
+#+author: Marcio Andrey Oliveira
 
 * Installation
 #+begin_src bash
