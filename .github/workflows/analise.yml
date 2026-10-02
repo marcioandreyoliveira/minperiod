@@ -3,7 +3,7 @@ name: Coleta e Análise Diária
 on:
   schedule:
     # Roda todo dia às 09:00 UTC (06:00 BRT)
-    - cron: '0 9 * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:  # permite rodar manualmente
 
 # Permissão de escrita para o git push
