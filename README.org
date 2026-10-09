@@ -50,3 +50,5 @@ Exemple
 
 ** Results
 The raw data are saved in the =data= folder. The analysis of the results are saved in the =results= folder.
+
+* Problems with Github Actions: It's not running in the desired time.
