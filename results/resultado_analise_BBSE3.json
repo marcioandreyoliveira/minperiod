@@ -1,12 +1,12 @@
 {
   "ticker": "BBSE3",
   "faixa_mais_provavel": "10:00-11:00",
-  "dias_na_faixa": 32,
-  "total_dias": 68,
-  "percentual": 47.1,
-  "data_analise": "2026-10-14 14:40:59",
+  "dias_na_faixa": 33,
+  "total_dias": 69,
+  "percentual": 47.8,
+  "data_analise": "2026-10-15 14:25:43",
   "faixas": {
-    "10:00-11:00": 32,
+    "10:00-11:00": 33,
     "11:00-12:00": 7,
     "12:00-13:00": 6,
     "13:00-14:00": 5,
