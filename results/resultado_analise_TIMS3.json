@@ -1,12 +1,12 @@
 {
   "ticker": "TIMS3",
   "faixa_mais_provavel": "10:00-11:00",
-  "dias_na_faixa": 36,
-  "total_dias": 69,
-  "percentual": 52.2,
-  "data_analise": "2026-10-15 14:25:43",
+  "dias_na_faixa": 37,
+  "total_dias": 70,
+  "percentual": 52.9,
+  "data_analise": "2026-10-16 14:16:44",
   "faixas": {
-    "10:00-11:00": 36,
+    "10:00-11:00": 37,
     "11:00-12:00": 8,
     "12:00-13:00": 11,
     "13:00-14:00": 1,
