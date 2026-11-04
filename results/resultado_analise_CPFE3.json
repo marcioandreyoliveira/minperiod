@@ -1,12 +1,12 @@
 {
   "ticker": "CPFE3",
   "faixa_mais_provavel": "10:00-11:00",
-  "dias_na_faixa": 34,
-  "total_dias": 81,
-  "percentual": 42.0,
-  "data_analise": "2026-11-03 17:20:50",
+  "dias_na_faixa": 35,
+  "total_dias": 82,
+  "percentual": 42.7,
+  "data_analise": "2026-11-04 17:32:07",
   "faixas": {
-    "10:00-11:00": 34,
+    "10:00-11:00": 35,
     "11:00-12:00": 9,
     "12:00-13:00": 7,
     "13:00-14:00": 5,
