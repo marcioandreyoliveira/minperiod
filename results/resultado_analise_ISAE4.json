@@ -1,12 +1,12 @@
 {
   "ticker": "ISAE4",
   "faixa_mais_provavel": "10:00-11:00",
-  "dias_na_faixa": 37,
-  "total_dias": 83,
-  "percentual": 44.6,
-  "data_analise": "2026-11-05 17:40:30",
+  "dias_na_faixa": 38,
+  "total_dias": 84,
+  "percentual": 45.2,
+  "data_analise": "2026-11-06 16:56:47",
   "faixas": {
-    "10:00-11:00": 37,
+    "10:00-11:00": 38,
     "11:00-12:00": 11,
     "12:00-13:00": 5,
     "13:00-14:00": 5,
