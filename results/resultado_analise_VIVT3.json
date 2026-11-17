@@ -1,12 +1,12 @@
 {
   "ticker": "VIVT3",
   "faixa_mais_provavel": "10:00-11:00",
-  "dias_na_faixa": 50,
-  "total_dias": 90,
-  "percentual": 55.6,
-  "data_analise": "2026-11-16 19:52:29",
+  "dias_na_faixa": 51,
+  "total_dias": 91,
+  "percentual": 56.0,
+  "data_analise": "2026-11-17 18:45:27",
   "faixas": {
-    "10:00-11:00": 50,
+    "10:00-11:00": 51,
     "11:00-12:00": 10,
     "12:00-13:00": 5,
     "13:00-14:00": 5,
